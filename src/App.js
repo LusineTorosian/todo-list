@@ -10,7 +10,7 @@ function App() {
   const [todos, setTodos] = useState([
     {
       id: Math.random(),
-      text: "Learn JS",
+      text: "en projectic em exav????",
       isCompleted: false
     },
     {
