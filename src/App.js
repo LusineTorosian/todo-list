@@ -1,13 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
 import { useState } from 'react';
-import TodoList from './TodoList';
-import ToDoForm from './ToDoForm';
-import ToDoFooter from './ToDoFooter';
+import TodoList from './components/TodoList';
+import ToDoForm from './components/ToDoForm';
+import ToDoFooter from './components/ToDoFooter';
 
 function App() {
 
-  const [todos, setTodos] = useState([
+  const items = [
     {
       id: Math.random(),
       text: "en projectic em exav????",
@@ -23,39 +21,44 @@ function App() {
       text: "Learn React",
       isCompleted: false
     }
-  ]);
+  ];
+
+  const [todos, setTodos] = useState(items);
+
+  const onAddHandler = (text) => {
+    setTodos([
+      ...todos,
+      {
+        id: Math.random(),
+        text: text,
+        isCompleted: false
+      }
+    ]);
+  }
+
+  const onDeleteHandler = (todo) => {
+    setTodos(todos.filter((t) => t.id !== todo.id));
+  }
+
+  const onChangeHandler = (newTodo) => {
+    setTodos(todos.map((todo) => {
+      if (todo.id === newTodo.id) {
+        return newTodo;
+      }
+      return todo;
+    }));
+  }
+
+  const onClearCompletedHandler = () => {
+    setTodos(todos.filter((todo) => !todo.isCompleted));
+  }
 
   return (
-    <div className="App">
-      <ToDoForm onAdd={(text) => {
-        setTodos([
-          ...todos,
-          {
-            id: Math.random(),
-            text: text,
-            isCompleted: false
-          }
-        ]);
-      }} />
-      <TodoList
-        todos={todos}
-        onDelete={(todo) => {
-          setTodos(todos.filter((t) => t.id !== todo.id));
-        }}
-        onChange={(newTodo) => {
-          setTodos(todos.map((todo) => {
-            if (todo.id === newTodo.id) {
-              return newTodo;
-            }
-            return todo;
-          }));
-        }}
-      />
-      <ToDoFooter todos={todos} onClearCompleted={() => {
-        setTodos(todos.filter((todo) => !todo.isCompleted));
-      }}
-      />
-    </div>
+    <>
+      <ToDoForm onAdd={onAddHandler} />
+      <TodoList todos={todos} onDelete={onDeleteHandler} onChange={onChangeHandler} />
+      <ToDoFooter todos={todos} onClearCompleted={onClearCompletedHandler} />
+    </>
   );
 }
 
