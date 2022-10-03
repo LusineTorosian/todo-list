@@ -8,7 +8,7 @@ function App() {
   const items = [
     {
       id: Math.random(),
-      text: "en projectic em exav????",
+      text: "Learn JS",
       isCompleted: false
     },
     {
